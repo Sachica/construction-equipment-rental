@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 	public void updateOrderStatus(@Param("newStatus") int newStatus, @Param("id") int id);
 	
 	@Query("Select o FROM Order o WHERE o.constructionSite.id = :csId")
-	public List<Order> findAllOrderByConstructionSiteId(int csId);
+	public List<Order> findAllOrderByConstructionSiteId(@Param("csId") int csId);
 	
 	@Query("SELECT o FROM Order o WHERE o.orderingParty = :userName")
 	public List<Order> getAllOrdersByUserName(@Param("userName") String userName);	

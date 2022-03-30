@@ -33,8 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.anyRequest().authenticated()
 			.antMatchers("/resources/**").permitAll()
+                        .anyRequest().authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/login")
@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web){
 		web.ignoring()
 		.antMatchers("/resources/**", "/static/**", "/css/**", "/img/");
 		super.configure(web);
