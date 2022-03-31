@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.rainbowforest.Application.model.catalog.Item;
 import com.rainbowforest.Application.model.catalog.Product;
 import com.rainbowforest.Application.model.constructionSite.ConstructionSite;
+import com.rainbowforest.Application.model.order.Order;
 import com.rainbowforest.Application.model.order.OrderDetails;
+import com.rainbowforest.Application.model.user.UserAccount;
 import com.rainbowforest.Application.service.constructionsite.ConstructionSiteService;
 import com.rainbowforest.Application.service.order.OrderDetailsService;
 import com.rainbowforest.Application.service.product.ProductService;
+import com.rainbowforest.Application.service.user.UserService;
 import com.rainbowforest.Application.utilities.OrderUtilities;
 import com.rainbowforest.Application.utilities.UserUtilities;
 
@@ -29,6 +32,9 @@ public class CartController {
 	@Autowired
 	private ProductService productService;
 	
+        @Autowired
+        private UserService userService;
+        
 	@Autowired
 	private ConstructionSiteService constructionSiteService;
 	
@@ -99,9 +105,7 @@ public class CartController {
 		List<Item> cart = (List<Item>)session.getAttribute("cart");
 		double totalPrice = OrderUtilities.getTotalPrice(cart);
 		OrderDetails orderDetails = new OrderDetails();
-		List<ConstructionSite> constructionSiteList = constructionSiteService.findAllConstructionSite();
 		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("constructionSiteList", constructionSiteList);
 		model.addAttribute("orderDetails", orderDetails);
 		model.addAttribute("cart", cart);
 		return "user/order/orderform";
@@ -119,9 +123,19 @@ public class CartController {
 			item.setQuantity(cart.get(i).getQuantity());
 			items.add(item);
 		}
+                String username = UserUtilities.getLoggedUser();
+                
+
+                UserAccount  ua = this.userService.findOneByUserName(username);
+                orderDetails.setFirstName(ua.getUserAccountDetails().getFirstName());
+                orderDetails.setLastName(ua.getUserAccountDetails().getLastName());
+                orderDetails.setEmail(ua.getUserAccountDetails().getEmail());
+                
+                orderDetails.setOrder(new Order());
+                orderDetails.getOrder().setConstructionSite(ua.getUserAccountDetails().getConstructionSites());
 		orderDetails.getOrder().setTotalPrice(OrderUtilities.getTotalPrice(items));
 		orderDetails.getOrder().setDate(LocalDate.now());
-		orderDetails.getOrder().setOrderingParty(UserUtilities.getLoggedUser());
+		orderDetails.getOrder().setOrderingParty(username);
 		orderDetails.setItems(items);
 		orderDetailsService.saveOrder(orderDetails);
 		return "user/catalog/catalog";

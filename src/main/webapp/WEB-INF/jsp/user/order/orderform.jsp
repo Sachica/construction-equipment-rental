@@ -24,22 +24,6 @@
 			<div id="form-container">
 				<div id="table-header">Order</div>
 				<sf:form  action="/cart/order/save" modelAttribute="orderDetails" method="post">
-					<div id="inputs-area">
-						<label>First name 
-							<sf:input path="firstName" />
-						</label>
-						<label>Last name 
-							<sf:input path="lastName" />
-						</label>
-						<label>Email 
-							<sf:input path="email" />
-						</label>
-						<label> Construction Site 
-							<sf:select path="order.constructionSite" id="select-cs">
-								<sf:options items="${constructionSiteList}" itemValue="id" itemLabel="buildingName" name="csid" />
-							</sf:select>
-						</label>
-					</div>
 					<table>
 						<tr>
 							<td colspan="6">Product List</td>

@@ -76,10 +76,9 @@
 								<td><sf:input path="position" type="text" /></td>
 							</tr>
 							<tr>
-								<td>Workplace</td>
+								<td>Workplace *</td>
 								<td>
 									<sf:select path="constructionSites" id="workplace" >
-										<sf:option value="0" label="None" selected="selected"/>
 										<sf:options items="${constructionSiteList}" itemValue="id" itemLabel="buildingName" name="csid"/>
 									</sf:select>
 								</td>

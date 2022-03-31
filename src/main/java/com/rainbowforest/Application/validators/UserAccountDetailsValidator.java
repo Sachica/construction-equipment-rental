@@ -27,6 +27,7 @@ public class UserAccountDetailsValidator implements Validator{
 		ValidationUtils.rejectIfEmpty(errors, "lastName", "error.lastName.empty");
 		ValidationUtils.rejectIfEmpty(errors, "userAccount.userName", "error.userName.empty");
 		ValidationUtils.rejectIfEmpty(errors, "userAccount.userPassword", "error.userPassword.empty");
+                ValidationUtils.rejectIfEmpty(errors, "constructionSites", "error.constructionSite.empty");
 			
 		if (!userAccountDetails.getPhoneNumber().equals(null)) {
 			boolean isMatch = PhoneUtilities.checkPhone(PhonePattern.PHONE_PATTERN, userAccountDetails.getPhoneNumber());
@@ -35,6 +36,13 @@ public class UserAccountDetailsValidator implements Validator{
 			}
 		}	
 		if(!userAccountDetails.getEmail().equals(null)) {
+			boolean isMatch = EmailUtilities.checkEmail(EmailPattern.EMAIL_PATTERN, userAccountDetails.getEmail());
+			if (!isMatch) {
+				errors.rejectValue("email", "error.email.isNotMatch");
+			}
+		}
+                
+                if(!userAccountDetails.getEmail().equals(null)) {
 			boolean isMatch = EmailUtilities.checkEmail(EmailPattern.EMAIL_PATTERN, userAccountDetails.getEmail());
 			if (!isMatch) {
 				errors.rejectValue("email", "error.email.isNotMatch");
